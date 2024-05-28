@@ -5,15 +5,15 @@ import numpy as np
 CUDA_VISIBLE_DEVICES = '0'  # The current version only supports one GPU training
 
 
-set = 'Aircraft'  # Different dataset with different
-model_name = ''
+set = 'CUB'  # Different dataset with different
+model_name = 'ML-Project_FGIA-Model_2'
 
 batch_size = 6
 vis_num = batch_size  # The number of visualized images in tensorboard
 eval_trainset = False  # Whether or not evaluate trainset
 save_interval = 1
 max_checkpoint_num = 200
-end_epoch = 200
+end_epoch = 10
 init_lr = 0.001
 lr_milestones = [60, 100]
 lr_decay_rate = 0.1
@@ -26,9 +26,9 @@ input_size = 448
 pretrain_path = './models/pretrained/resnet50-19c8e357.pth'
 
 
-if set == 'Aircraft':
-    model_path = './checkpoint/aircraft'  # pth save path
-    root = './datasets/FGVC-aircraft'  # dataset path
+if set == 'CUB':
+    model_path = './checkpoint/cub'  # pth save path
+    root = './datasets/CUB_200_2011'  # dataset path
     num_classes = 200
     # windows info for CUB
     N_list = [2, 3, 2]
@@ -60,7 +60,13 @@ else:
 '''indice2coordinates'''
 window_nums = compute_window_nums(ratios, stride, input_size)
 indices_ndarrays = [np.arange(0,window_num).reshape(-1,1) for window_num in window_nums]
-coordinates = [indices2coordinates(indices_ndarray, stride, input_size, ratios[i]) for i, indices_ndarray in enumerate(indices_ndarrays)] # 每个window在image上的坐标
+
+#debug statement
+for i, indices_ndarray in enumerate(indices_ndarrays):
+    print(f"Calling indices2coordinates with indices_ndarray: i: {i},{indices_ndarray}, stride: {stride}, input_size: {input_size}, ratio: {ratios[i]}")
+    coordinates = indices2coordinates(indices_ndarray, stride, input_size, ratios[i])
+
+coordinates = [indices2coordinates(indices_ndarray, stride, input_size, ratios[i]) for i, indices_ndarray in enumerate(indices_ndarrays)] # Coordinates of the bounding boxes
 coordinates_cat = np.concatenate(coordinates, 0)
 window_milestones = [sum(window_nums[:i+1]) for i in range(len(window_nums))]
 if set == 'CUB':
