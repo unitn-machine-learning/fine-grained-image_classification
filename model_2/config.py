@@ -5,7 +5,7 @@ import numpy as np
 CUDA_VISIBLE_DEVICES = '0'  # The current version only supports one GPU training
 
 
-set = 'CAR'  # Different dataset with different
+set = 'Aircraft'  # Different dataset with different
 model_name = ''
 
 batch_size = 6
@@ -26,9 +26,9 @@ input_size = 448
 pretrain_path = './models/pretrained/resnet50-19c8e357.pth'
 
 
-if set == 'CUB':
-    model_path = './checkpoint/cub'  # pth save path
-    root = './datasets/CUB_200_2011'  # dataset path
+if set == 'Aircraft':
+    model_path = './checkpoint/aircraft'  # pth save path
+    root = './datasets/FGVC-aircraft'  # dataset path
     num_classes = 200
     # windows info for CUB
     N_list = [2, 3, 2]
