@@ -1,4 +1,6 @@
 model_2_refined
+model_2/checkpoint/*
+model_2/models/pretrained/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

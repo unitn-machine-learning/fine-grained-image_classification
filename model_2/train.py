@@ -39,18 +39,18 @@ def main():
         "channels": channels
     })
 
-    #加载数据
+    #Data Loader
     trainloader, testloader = read_dataset(input_size, batch_size, root, set)
 
-    #定义模型
+    #Definition of the Model
     model = MainNet(proposalN=proposalN, num_classes=num_classes, channels=channels)
 
-    #设置训练参数
+    #Definition of training parameters
     criterion = nn.CrossEntropyLoss()
 
     parameters = model.parameters()
 
-    #加载checkpoint
+    #Data Loader checkpoint
     save_path = os.path.join(model_path, model_name)
     if os.path.exists(save_path):
         start_epoch, lr = auto_load_resume(model, save_path, status='train')
@@ -63,15 +63,15 @@ def main():
     # define optimizers
     optimizer = torch.optim.SGD(parameters, lr=lr, momentum=0.9, weight_decay=weight_decay)
 
-    model = model.cuda()  # 部署在GPU
+    model = model.cuda()  # Usage of GPU
 
     scheduler = MultiStepLR(optimizer, milestones=lr_milestones, gamma=lr_decay_rate)
 
-    # 保存config参数信息
+    # Save config parameter information
     time_str = time.strftime("%Y%m%d-%H%M%S")
     shutil.copy('./config.py', os.path.join(save_path, "{}config.py".format(time_str)))
 
-    # 开始训练
+    # Start training
     train(model=model,
           trainloader=trainloader,
           testloader=testloader,
@@ -86,5 +86,6 @@ def main():
     
     # Finish wandb run
     wandb.finish()
+
 if __name__ == '__main__':
     main()
