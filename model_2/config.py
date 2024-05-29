@@ -5,13 +5,13 @@ import numpy as np
 CUDA_VISIBLE_DEVICES = '0'  # The current version only supports one GPU training
 
 
-set = 'Aircraft'  # Different dataset with different
+set = 'CAR'  # Different dataset with different
 model_name = ''
 
 batch_size = 6
 vis_num = batch_size  # The number of visualized images in tensorboard
 eval_trainset = False  # Whether or not evaluate trainset
-save_interval = 5
+save_interval = 1
 max_checkpoint_num = 200
 end_epoch = 200
 init_lr = 0.001
@@ -26,10 +26,10 @@ input_size = 448
 pretrain_path = './models/pretrained/resnet50-19c8e357.pth'
 
 
-if set == 'Aircraft':
-    model_path = './checkpoint/aircraft'  # pth save path
-    root = './datasets/FGVC-aircraft'  # dataset path
-    num_classes = 100
+if set == 'CUB':
+    model_path = './checkpoint/cub'  # pth save path
+    root = './datasets/CUB'  # dataset path
+    num_classes = 200
     # windows info for CUB
     N_list = [2, 3, 2]
     proposalN = sum(N_list)  # proposal window num
