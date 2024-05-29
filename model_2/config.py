@@ -24,7 +24,7 @@ channels = 2048
 input_size = 448
 
 # The pth path of pretrained model
-pretrain_path = './model_2/models/pretrained/resnet50-19c8e357.pth'
+pretrain_path = './models/pretrained/resnet50-19c8e357.pth'
 
 dataset_paths = {'Aircraft': './datasets/FGVC-aircraft', 
                  'CUB': './datasets/CUB_200_2011',
@@ -33,7 +33,7 @@ dataset_paths = {'Aircraft': './datasets/FGVC-aircraft',
                  }
 
 model_path = f'./checkpoint/{set}'  # pth save path
-root =   dataset_paths[set]# dataset path
+root =   dataset_paths[set] # dataset path
 
 if set == 'CUB':
     num_classes = 200
