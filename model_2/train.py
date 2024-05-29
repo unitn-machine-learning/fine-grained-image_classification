@@ -12,6 +12,7 @@ from utils.read_dataset import read_dataset
 from utils.auto_laod_resume import auto_load_resume
 from networks.model import MainNet
 import os
+import wandb
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -19,6 +20,24 @@ warnings.filterwarnings('ignore')
 os.environ['CUDA_VISIBLE_DEVICES'] = CUDA_VISIBLE_DEVICES
 
 def main():
+    # Initialize wandb
+    wandb.init(project='model_2_training', config={
+        "num_classes": num_classes,
+        "model_name": model_name,
+        "lr_milestones": lr_milestones,
+        "lr_decay_rate": lr_decay_rate,
+        "input_size": input_size,
+        "root": root,
+        "end_epoch": end_epoch,
+        "save_interval": save_interval,
+        "init_lr": init_lr,
+        "batch_size": batch_size,
+        "CUDA_VISIBLE_DEVICES": CUDA_VISIBLE_DEVICES,
+        "weight_decay": weight_decay,
+        "proposalN": proposalN,
+        "set": set,
+        "channels": channels
+    })
 
     #Data Loader
     trainloader, testloader = read_dataset(input_size, batch_size, root, set)
@@ -64,6 +83,8 @@ def main():
           end_epoch=end_epoch,
           save_interval=save_interval)
 
-
+    
+    # Finish wandb run
+    wandb.finish()
 if __name__ == '__main__':
     main()

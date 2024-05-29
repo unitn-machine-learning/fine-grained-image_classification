@@ -5,6 +5,8 @@ from tqdm import tqdm
 from tensorboardX import SummaryWriter
 from config import max_checkpoint_num, proposalN, eval_trainset, set
 from utils.eval_model import eval
+import wandb
+
 
 def train(model,
           trainloader,
@@ -16,14 +18,17 @@ def train(model,
           start_epoch,
           end_epoch,
           save_interval):
-
+    # Initialize wandb
+    wandb.init(project='your_project_name')
     for epoch in range(start_epoch + 1, end_epoch + 1):
         model.train()
 
         print('Training %d epoch' % epoch)
 
         lr = next(iter(optimizer.param_groups))['lr']
-
+        
+        wandb.log({'learning_rate': lr}, step=epoch)
+        
         for i, data in enumerate(tqdm(trainloader)):
             if set == 'CUB':
                 images, labels, _, _ = data
@@ -60,6 +65,15 @@ def train(model,
             print(
                 'Train set: raw accuracy: {:.2f}%, local accuracy: {:.2f}%'.format(
                     100. * raw_accuracy, 100. * local_accuracy))
+            # wandb logging
+            wandb.log({
+                'Train/raw_accuracy': raw_accuracy,
+                'Train/local_accuracy': local_accuracy,
+                'Train/raw_loss_avg': raw_loss_avg,
+                'Train/local_loss_avg': local_loss_avg,
+                'Train/windowscls_loss_avg': windowscls_loss_avg,
+                'Train/total_loss_avg': total_loss_avg,
+            }, step=epoch)
 
             # tensorboard
             with SummaryWriter(log_dir=os.path.join(save_path, 'log'), comment='train') as writer:
@@ -80,7 +94,17 @@ def train(model,
         print(
             'Test set: raw accuracy: {:.2f}%, local accuracy: {:.2f}%'.format(
                 100. * raw_accuracy, 100. * local_accuracy))
-
+        
+        # wandb logging
+        wandb.log({
+            'Test/raw_accuracy': raw_accuracy,
+            'Test/local_accuracy': local_accuracy,
+            'Test/raw_loss_avg': raw_loss_avg,
+            'Test/local_loss_avg': local_loss_avg,
+            'Test/windowscls_loss_avg': windowscls_loss_avg,
+            'Test/total_loss_avg': total_loss_avg,
+        }, step=epoch)
+        
         # tensorboard
         with SummaryWriter(log_dir=os.path.join(save_path, 'log'), comment='test') as writer:
             writer.add_scalar('Test/raw_accuracy', raw_accuracy, epoch)
@@ -93,11 +117,13 @@ def train(model,
         # save checkpoint
         if (epoch % save_interval == 0) or (epoch == end_epoch):
             print('Saving checkpoint')
+            checkpoint_path = os.path.join(save_path, 'epoch' + str(epoch) + '.pth')
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
                 'learning_rate': lr,
-            }, os.path.join(save_path, 'epoch' + str(epoch) + '.pth'))
+            }, checkpoint_path)
+            wandb.save(checkpoint_path)
 
         # Limit the number of checkpoints to less than or equal to max_checkpoint_num,
         # and delete the redundant ones
