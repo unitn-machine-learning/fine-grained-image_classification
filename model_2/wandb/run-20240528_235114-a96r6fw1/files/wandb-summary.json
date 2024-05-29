@@ -1,1 +1,0 @@
-{"learning_rate": 0.001, "_timestamp": 1716940304.1743782, "Test/raw_accuracy": 0.0, "Test/local_accuracy": 0.0, "Test/raw_loss_avg": 15.585052871704102, "Test/local_loss_avg": 15.837374305725097, "Test/windowscls_loss_avg": 5.2983198165893555, "Test/total_loss_avg": 36.72074737548828, "_runtime": 29.186376094818115, "_step": 6, "_wandb": {"runtime": 33}}
