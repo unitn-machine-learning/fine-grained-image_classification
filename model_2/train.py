@@ -69,7 +69,7 @@ def main():
 
     # Save config parameter information
     time_str = time.strftime("%Y%m%d-%H%M%S")
-    shutil.copy('./config.py', os.path.join(save_path, "{}config.py".format(time_str)))
+    shutil.copy('./model_2/config.py', os.path.join(save_path, "{}config.py".format(time_str)))
 
     # Start training
     train(model=model,
@@ -86,5 +86,6 @@ def main():
     
     # Finish wandb run
     wandb.finish()
+
 if __name__ == '__main__':
     main()
