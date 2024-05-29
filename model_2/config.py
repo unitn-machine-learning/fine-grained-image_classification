@@ -25,10 +25,16 @@ input_size = 448
 # The pth path of pretrained model
 pretrain_path = './models/pretrained/resnet50-19c8e357.pth'
 
+dataset_paths = {'Aircraft': './datasets/FGVC-aircraft', 
+                 'CUB': './datasets/CUB_200_2011',
+                 'CAR':'./datasets/Stanford_Cars',
+                 'Competition':'./datasets/CompetitionData',
+                 }
+
+model_path = f'./checkpoint/{set}'  # pth save path
+root =   dataset_paths[set]# dataset path
 
 if set == 'CUB':
-    model_path = './checkpoint/cub'  # pth save path
-    root = './datasets/CUB_200_2011'  # dataset path
     num_classes = 200
     # windows info for CUB
     N_list = [2, 3, 2]
@@ -48,12 +54,8 @@ else:
               [8, 8], [6, 10], [10, 6], [7, 9], [9, 7],
               [10, 10], [9, 11], [11, 9], [8, 12], [12, 8]]
     if set == 'CAR':
-        model_path = './checkpoint/car'      # pth save path
-        root = './datasets/Stanford_Cars'  # dataset path
         num_classes = 196
     elif set == 'Aircraft':
-        model_path = './checkpoint/aircraft'      # pth save path
-        root = './datasets/FGVC-aircraft'  # dataset path
         num_classes = 100
 
 
