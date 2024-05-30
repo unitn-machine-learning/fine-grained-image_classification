@@ -2,10 +2,10 @@ import os
 
 home = os.path.expanduser("~")
 root_dirs = {
-    'bird': home + '/Hello/Data/bird',
-    'car':  home + '/Hello/Data/car',
-    'air':  home + '/Hello/Data/aircraft',
-    'dog':  home + '/Hello/Data/dog'
+    'bird': home + '/temp/fine-grained-image_classification/model_1/Data/bird',
+    'car':  home + '/temp/fine-grained-image_classification/model_1/Data/car',
+    'air':  home + '/temp/fine-grained-image_classification/model_1/Data/aircraft',
+    'dog':  home + '/temp/fine-grained-image_classification/model_1/Data/dog'
 }
 
 class_nums = {
