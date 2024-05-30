@@ -1,6 +1,6 @@
 import os
 import torch
-from config import init_lr
+from config import init_lr, final_layer_name
 from collections import OrderedDict
 
 def auto_load_resume(model, path, status):
@@ -16,13 +16,18 @@ def auto_load_resume(model, path, status):
             checkpoint = torch.load(pth_path)
             
             try:
-                model.load_state_dict(checkpoint['model_state_dict'])
+                state_dict = checkpoint['model_state_dict']
+                # Remove the final layer's parameters
+                state_dict = {k: v for k, v in state_dict.items() if not k.startswith(final_layer_name)}
+                model.load_state_dict(state_dict, strict=False)
             except KeyError:
                 new_state_dict = OrderedDict()
                 for k, v in checkpoint['model_state_dict'].items():
                     name = k[7:] if k.startswith('module.') else k  # remove `module.` if present
                     new_state_dict[name] = v
-                model.load_state_dict(new_state_dict)
+                # Remove the final layer's parameters
+                new_state_dict = {k: v for k, v in new_state_dict.items() if not k.startswith(final_layer_name)}
+                model.load_state_dict(new_state_dict, strict=False)
 
             epoch = checkpoint['epoch']
             lr = checkpoint.get('learning_rate', init_lr)
@@ -32,13 +37,18 @@ def auto_load_resume(model, path, status):
         print('Load model from', path)
         checkpoint = torch.load(path, map_location='cpu')
         try:
-            model.load_state_dict(checkpoint['model_state_dict'])
+            state_dict = checkpoint['model_state_dict']
+            # Remove the final layer's parameters
+            state_dict = {k: v for k, v in state_dict.items() if not k.startswith(final_layer_name)}
+            model.load_state_dict(state_dict, strict=False)
         except KeyError:
             new_state_dict = OrderedDict()
             for k, v in checkpoint['model_state_dict'].items():
                 name = k[7:] if k.startswith('module.') else k  # remove `module.` if present
                 new_state_dict[name] = v
-            model.load_state_dict(new_state_dict)
+            # Remove the final layer's parameters
+            new_state_dict = {k: v for k, v in new_state_dict.items() if not k.startswith(final_layer_name)}
+            model.load_state_dict(new_state_dict, strict=False)
         epoch = checkpoint['epoch']
         print('Resume from %s' % path)
         return epoch

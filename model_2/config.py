@@ -35,7 +35,7 @@ dataset_paths = {'Aircraft': './datasets/FGVC-aircraft',
 
 model_path = f'./checkpoint/{set}'  # pth save path
 root =   dataset_paths[set] # dataset path
-
+final_layer_name = 'rawcls_net'
 if set == 'CUB':
     num_classes = 200
     # windows info for CUB
