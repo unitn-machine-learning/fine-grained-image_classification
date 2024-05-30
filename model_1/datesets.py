@@ -24,9 +24,9 @@ transform_test = transforms.Compose([
     ])
 
 class AIRDateset(Dataset):
-    img_folder = os.path.join('fgvc-aircraft-2013b', 'data', 'images')
 
     def __init__(self, root, train=True):
+        self.img_folder = os.path.join(root, 'fgvc-aircraft-2013b', 'data', 'images')
         self.train = train
         self.root = root
         self.class_type = 'variant'
@@ -76,7 +76,7 @@ class AIRDateset(Dataset):
         assert (len(image_ids) == len(targets))
         images = []
         for i in range(len(image_ids)):
-            item = (os.path.join(self.root, self.img_folder,
+            item = (os.path.join(self.img_folder,
                                  '%s.jpg' % image_ids[i]), targets[i])
             images.append(item)
         return images

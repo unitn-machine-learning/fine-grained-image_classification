@@ -1,4 +1,5 @@
 model_2_refined
+model_1/wandb
 model_2/checkpoint/*
 model_2/models/pretrained/*
 # Byte-compiled / optimized / DLL files
