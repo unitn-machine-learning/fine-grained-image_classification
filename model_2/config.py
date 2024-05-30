@@ -33,16 +33,10 @@ dataset_paths = {'Aircraft': './datasets/FGVC-aircraft',
                  'Competition':'./datasets/CompetitionData',
                  }
 
-<<<<<<< HEAD
-if set == 'CUB':
-    model_path = './checkpoint/cub'  # pth save path
-    root = './datasets/CUB'  # dataset path
-=======
 model_path = f'./checkpoint/{set}'  # pth save path
 root =   dataset_paths[set] # dataset path
 
 if set == 'CUB':
->>>>>>> 2e9bb09cef8d6faff180d0a3021333943b2017bb
     num_classes = 200
     # windows info for CUB
     N_list = [2, 3, 2]
