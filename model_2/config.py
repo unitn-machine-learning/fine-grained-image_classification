@@ -6,13 +6,8 @@ import os
 CUDA_VISIBLE_DEVICES = '0'  # The current version only supports one GPU training
 
 
-<<<<<<< HEAD
-set = 'CAR'  # Different dataset with different
-model_name = ''
-=======
 set = 'Aircraft'  # Different dataset with different
 model_name = 'ML-Project_FGIA-Model_2-Aircraft'
->>>>>>> 2e9bb09cef8d6faff180d0a3021333943b2017bb
 
 batch_size = 6
 vis_num = batch_size  # The number of visualized images in tensorboard
@@ -37,16 +32,10 @@ dataset_paths = {'Aircraft': './datasets/FGVC-aircraft',
                  'Competition':'./datasets/CompetitionData',
                  }
 
-<<<<<<< HEAD
-if set == 'CUB':
-    model_path = './checkpoint/cub'  # pth save path
-    root = './datasets/CUB'  # dataset path
-=======
 model_path = f'./checkpoint/{set}'  # pth save path
 root =   dataset_paths[set] # dataset path
 
 if set == 'CUB':
->>>>>>> 2e9bb09cef8d6faff180d0a3021333943b2017bb
     num_classes = 200
     # windows info for CUB
     N_list = [2, 3, 2]

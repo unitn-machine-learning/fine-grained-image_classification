@@ -7,6 +7,8 @@ from config import input_size, root, proposalN, channels
 from utils.read_dataset import read_dataset
 from utils.auto_laod_resume import auto_load_resume
 from networks.model import MainNet
+import warnings
+warnings.filterwarnings('ignore')
 
 import os
 
