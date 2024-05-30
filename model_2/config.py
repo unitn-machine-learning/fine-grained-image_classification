@@ -6,6 +6,7 @@ import os
 CUDA_VISIBLE_DEVICES = '0'  # The current version only supports one GPU training
 
 
+set = 'CUB'  # Different dataset with different
 set = 'Aircraft'  # Different dataset with different
 model_name = 'ML-Project_FGIA-Model_2-Aircraft'
 
