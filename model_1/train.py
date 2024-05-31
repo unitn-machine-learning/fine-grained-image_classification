@@ -16,8 +16,7 @@ from torch.utils.data.dataloader import DataLoader
 import numpy as np
 from model import FBSD  # Ensure your model is imported correctly
 from datesets import get_trainAndtest
-from config import class_nums
-from config import HyperParams
+from config import class_nums, HyperParams, eval_test
 
 def train():
     # Initialize wandb
@@ -148,20 +147,24 @@ def train():
         
         # Log to wandb
         wandb.log({"train_loss": train_loss, "train_acc": train_acc, "epoch": epoch})
-
+        
+        if not eval_test:
+            acc = train_acc
+        else:    
+            acc = test(net, testloader)
+            
         # Evaluate
-        val_acc = test(net, testloader)
         torch.save(net.state_dict(), f'./{output_dir}/current_model.pth')
-        if val_acc > best_val_acc:
-            best_val_acc = val_acc
+        if acc > best_val_acc:
+            best_val_acc = acc
             torch.save(net.state_dict(), f'./{output_dir}/best_model.pth')
         print("best result: ", best_val_acc)
-        print("current result: ", val_acc)
+        print("current result: ", acc)
         end_time = datetime.now()
         print("end time: ", end_time.strftime('%Y-%m-%d-%H:%M:%S'))
 
         # Log validation accuracy to wandb
-        wandb.log({"val_acc": val_acc, "best_val_acc": best_val_acc, "epoch": epoch})
+        wandb.log({"val_acc": acc, "best_val_acc": best_val_acc, "epoch": epoch})
 
 def test(net, testloader):
     net.eval()

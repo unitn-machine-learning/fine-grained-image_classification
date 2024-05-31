@@ -23,6 +23,48 @@ transform_test = transforms.Compose([
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
 
+
+
+class CompetitionDataset(Dataset):
+    def __init__(self, root, train=True):
+        self.img_folder = os.path.join(root, 'train' if train else 'test')
+        self.train = train
+        self.root = root
+        
+        self.img_paths = []
+        self.img_labels = []
+        
+        if train:
+            # Iterate through each class directory for training data
+            for class_dir in os.listdir(self.img_folder):
+                class_dir_path = os.path.join(self.img_folder, class_dir)
+                if os.path.isdir(class_dir_path):
+                    class_id = int(class_dir.split('_')[0])  # Extract class ID
+                    for img_name in os.listdir(class_dir_path):
+                        self.img_paths.append(os.path.join(class_dir_path, img_name))                        
+                        self.img_labels.append(class_id)
+        else:
+            # For test data, just get the image paths
+            for img_name in os.listdir(self.img_folder):
+                self.img_paths.append(os.path.join(self.img_folder, img_name))
+                
+        self.loader = default_loader
+
+    def __getitem__(self, index):
+        img_path = self.img_paths[index]
+        img = self.loader(img_path)
+        
+        if self.train:
+            img = transform_train(img)
+            img_label = self.img_labels[index]
+            return img, img_label
+        else:
+            img = transform_test(img)
+            return img
+
+    def __len__(self):
+        return len(self.img_paths)
+    
 class AIRDateset(Dataset):
 
     def __init__(self, root, train=True):
@@ -215,6 +257,9 @@ def get_trainAndtest():
         return AIRDateset(root=root_dir, train=True), AIRDateset(root=root_dir, train=False)
     elif kind == 'dog':
         return DOGDateSet(root=root_dir, train=True), DOGDateSet(root=root_dir, train=False)
+    elif kind == 'competition':
+        return CompetitionDataset(root=root_dir, train=True), CompetitionDataset(root=root_dir, train=False)
+    
     else:
         print("unsupported dataset")
         exit(0)
