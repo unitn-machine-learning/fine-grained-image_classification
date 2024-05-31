@@ -2,8 +2,7 @@ import os
 import glob
 import torch
 from tqdm import tqdm
-from tensorboardX import SummaryWriter
-from config import max_checkpoint_num, proposalN, eval_trainset, set
+from config import max_checkpoint_num, proposalN, eval_trainset, set, eval_testset
 from utils.eval_model import eval
 import wandb
 
@@ -56,7 +55,8 @@ def train(model,
             optimizer.step()
 
         scheduler.step()
-
+        
+        
         # evaluation every epoch
         if eval_trainset:
             raw_loss_avg, windowscls_loss_avg, total_loss_avg, raw_accuracy, local_accuracy, local_loss_avg\
@@ -75,45 +75,27 @@ def train(model,
                 'Train/total_loss_avg': total_loss_avg,
             }, step=epoch)
 
-            # tensorboard
-            with SummaryWriter(log_dir=os.path.join(save_path, 'log'), comment='train') as writer:
+        if eval_testset:
+            # eval testset
+            raw_loss_avg, windowscls_loss_avg, total_loss_avg, raw_accuracy, local_accuracy, \
+            local_loss_avg\
+                = eval(model, testloader, criterion, 'test', save_path, epoch)
 
-                writer.add_scalar('Train/learning rate', lr, epoch)
-                writer.add_scalar('Train/raw_accuracy', raw_accuracy, epoch)
-                writer.add_scalar('Train/local_accuracy', local_accuracy, epoch)
-                writer.add_scalar('Train/raw_loss_avg', raw_loss_avg, epoch)
-                writer.add_scalar('Train/local_loss_avg', local_loss_avg, epoch)
-                writer.add_scalar('Train/windowscls_loss_avg', windowscls_loss_avg, epoch)
-                writer.add_scalar('Train/total_loss_avg', total_loss_avg, epoch)
-
-        # eval testset
-        raw_loss_avg, windowscls_loss_avg, total_loss_avg, raw_accuracy, local_accuracy, \
-        local_loss_avg\
-            = eval(model, testloader, criterion, 'test', save_path, epoch)
-
-        print(
-            'Test set: raw accuracy: {:.2f}%, local accuracy: {:.2f}%'.format(
-                100. * raw_accuracy, 100. * local_accuracy))
+            print(
+                'Test set: raw accuracy: {:.2f}%, local accuracy: {:.2f}%'.format(
+                    100. * raw_accuracy, 100. * local_accuracy))
         
-        # wandb logging
-        wandb.log({
-            'Test/raw_accuracy': raw_accuracy,
-            'Test/local_accuracy': local_accuracy,
-            'Test/raw_loss_avg': raw_loss_avg,
-            'Test/local_loss_avg': local_loss_avg,
-            'Test/windowscls_loss_avg': windowscls_loss_avg,
-            'Test/total_loss_avg': total_loss_avg,
-        }, step=epoch)
+            # wandb logging
+            wandb.log({
+                'Test/raw_accuracy': raw_accuracy,
+                'Test/local_accuracy': local_accuracy,
+                'Test/raw_loss_avg': raw_loss_avg,
+                'Test/local_loss_avg': local_loss_avg,
+                'Test/windowscls_loss_avg': windowscls_loss_avg,
+                'Test/total_loss_avg': total_loss_avg,
+            }, step=epoch)
         
-        # tensorboard
-        with SummaryWriter(log_dir=os.path.join(save_path, 'log'), comment='test') as writer:
-            writer.add_scalar('Test/raw_accuracy', raw_accuracy, epoch)
-            writer.add_scalar('Test/local_accuracy', local_accuracy, epoch)
-            writer.add_scalar('Test/raw_loss_avg', raw_loss_avg, epoch)
-            writer.add_scalar('Test/local_loss_avg', local_loss_avg, epoch)
-            writer.add_scalar('Test/windowscls_loss_avg', windowscls_loss_avg, epoch)
-            writer.add_scalar('Test/total_loss_avg', total_loss_avg, epoch)
-
+        
         # save checkpoint
         if (epoch % save_interval == 0) or (epoch == end_epoch):
             print('Saving checkpoint')

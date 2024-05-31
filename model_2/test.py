@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import sys
 from tqdm import tqdm
-from config import input_size, root, proposalN, channels
+from config import input_size, root, proposalN, channels, num_classes, set
 from utils.read_dataset import read_dataset
 from utils.auto_laod_resume import auto_load_resume
 from networks.model import MainNet
@@ -18,17 +18,19 @@ CUDA = torch.cuda.is_available()
 DEVICE = torch.device("cuda" if CUDA else "cpu")
 
 # dataset
-set = 'CUB'
+# set = 'CUB'
 if set == 'CUB':
     root = './datasets/CUB_200_2011'  # dataset path
     # model path
     pth_path = "./models/cub_epoch144.pth"
-    num_classes = 200
 elif set == 'Aircraft':
     root = './datasets/FGVC-aircraft'  # dataset path
     # model path
     pth_path = "./models/air_epoch146.pth"
-    num_classes = 100
+elif set == 'Competition':
+    root = '.datasets/CompetitionData'
+    pth_oath = './models/competition.pth'
+    num_classes = num_classes
 
 batch_size = 10
 

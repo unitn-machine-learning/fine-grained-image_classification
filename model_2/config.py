@@ -6,7 +6,7 @@ import os
 CUDA_VISIBLE_DEVICES = '0'  # The current version only supports one GPU training
 
 
-set = 'CUB'  # Different dataset with different
+set = 'Competition'  # Different dataset with different
 # set = 'Aircraft'  # Different dataset with different
 model_name = 'ML-Project_FGIA-Model_2-Aircraft'
 
@@ -15,7 +15,7 @@ vis_num = batch_size  # The number of visualized images in tensorboard
 eval_trainset = False  # Whether or not evaluate trainset
 save_interval = 1
 max_checkpoint_num = 200
-end_epoch = 180
+end_epoch = 5
 init_lr = 0.001
 lr_milestones = [60, 100]
 lr_decay_rate = 0.1
@@ -23,6 +23,8 @@ weight_decay = 1e-4
 stride = 32
 channels = 2048
 input_size = 448
+
+eval_testset = False
 
 # The pth path of pretrained model
 pretrain_path = './models/pretrained/resnet50-19c8e357.pth'
@@ -59,8 +61,10 @@ else:
         num_classes = 196
     elif set == 'Aircraft':
         num_classes = 100
+    elif set=='Competition':
+        num_classes = 20
 
-print(os.getcwd())
+
 
 '''indice2coordinates'''
 window_nums = compute_window_nums(ratios, stride, input_size)

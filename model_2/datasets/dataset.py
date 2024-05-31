@@ -11,54 +11,60 @@ class CompetitionDataset():
         self.input_size = input_size
         self.root = root
         self.is_train = is_train
-        train_img_path = os.path.join(self.root, 'train', 'images')
-        test_img_path = os.path.join(self.root, 'test', 'images')
-        train_label_file = open(os.path.join(self.root, 'train', 'label.txt'))
-        # test_label_file = open(os.path.join(self.root, 'test', 'label.txt'))
-        train_img_label = []
-        test_img_label = []
-        for line in train_label_file:
-            train_img_label.append([os.path.join(train_img_path,line[:-1].split(' ')[0]), int(line[:-1].split(' ')[1])-1])
-        # for line in test_label_file:
-        #     test_img_label.append([os.path.join(test_img_path,line[:-1].split(' ')[0]), int(line[:-1].split(' ')[1])-1])
-        self.train_img_label = train_img_label[:data_len]
-        # self.test_img_label = test_img_label[:data_len]
-
+        
+        if is_train:
+            img_path = os.path.join(self.root, 'train')
+        else:
+            img_path = os.path.join(self.root, 'test')
+        self.img_paths = []
+        self.img_labels = []
+        # Iterate through each class directory
+        for class_dir in os.listdir(img_path):
+            if self.is_train:
+                class_dir_path = os.path.join(img_path, class_dir)
+                if os.path.isdir(class_dir_path):
+                    class_id = int(class_dir.split('_')[0]) # Extract class ID
+                    
+                    for img_name in os.listdir(class_dir_path):
+                        self.img_paths.append(os.path.join(class_dir_path, img_name))                        
+                        self.img_labels.append(class_id)
+               
+            else:
+                
+                self.img_paths.append(class_dir)
+                    
+        
+        # Limit the dataset size if data_len is specified
+        if data_len is not None:
+            self.img_paths = self.img_paths[:data_len]
+            self.img_labels = self.img_labels[:data_len]
+        
     def __getitem__(self, index):
+        img_path = self.img_paths[index]
+        if not self.is_train:
+            img_path = os.path.join(self.root,'test',img_path)
+        img = imageio.imread(img_path)
+        if len(img.shape) == 2:
+            img = np.stack([img] * 3, axis=-1)
+        img = Image.fromarray(img, mode='RGB')
+        
+        img = transforms.Resize((self.input_size, self.input_size), Image.BILINEAR)(img)
         if self.is_train:
-            img, target = imageio.imread(self.train_img_label[index][0]), self.train_img_label[index][1]
-            if len(img.shape) == 2:
-                img = np.stack([img] * 3, 2)
-            img = Image.fromarray(img, mode='RGB')
-
-            img = transforms.Resize((self.input_size, self.input_size), Image.BILINEAR)(img)
-            # img = transforms.RandomResizedCrop(size=self.input_size,scale=(0.4, 0.75),ratio=(0.5,1.5))(img)
-            # img = transforms.RandomCrop(self.input_size)(img)
             img = transforms.RandomHorizontalFlip()(img)
             img = transforms.ColorJitter(brightness=0.2, contrast=0.2)(img)
+        img = transforms.ToTensor()(img)
+        img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
+        if self.is_train:
+            img_label = self.img_labels[index]
+            return img, img_label
 
-            img = transforms.ToTensor()(img)
-            img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
-
-        # else:
-        #     img, target = imageio.imread(self.test_img_label[index][0]), self.test_img_label[index][1]
-        #     if len(img.shape) == 2:
-        #         img = np.stack([img] * 3, 2)
-        #     img = Image.fromarray(img, mode='RGB')
-        #     img = transforms.Resize((self.input_size, self.input_size), Image.BILINEAR)(img)
-        #     # img = transforms.CenterCrop(self.input_size)(img)
-        #     img = transforms.ToTensor()(img)
-        #     img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
-
-        return img, target
+        return img
 
     def __len__(self):
-        if self.is_train:
-            return len(self.train_img_label)
-        # else:
-        #     return len(self.test_img_label)
+        return len(self.img_paths)
         
-        
+
+
 class CUB():
     def __init__(self, input_size, root, is_train=True, data_len=None):
         self.input_size = input_size
