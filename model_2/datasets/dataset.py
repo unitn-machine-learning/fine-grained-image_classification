@@ -54,8 +54,10 @@ class CompetitionDataset():
             img = transforms.ColorJitter(brightness=0.2, contrast=0.2)(img)
         img = transforms.ToTensor()(img)
         img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
+        
         if self.is_train:
             img_label = self.img_labels[index]
+            img_label = torch.tensor(img_label, dtype=torch.long)  # Convert label to tensor
             return img, img_label
 
         return img
@@ -256,3 +258,8 @@ class FGVC_aircraft():
             return len(self.train_img_label)
         else:
             return len(self.test_img_label)
+
+
+import os 
+
+os.listdirs()

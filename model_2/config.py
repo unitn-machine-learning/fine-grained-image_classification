@@ -8,14 +8,14 @@ CUDA_VISIBLE_DEVICES = '0'  # The current version only supports one GPU training
 
 set = 'Competition'  # Different dataset with different
 # set = 'Aircraft'  # Different dataset with different
-model_name = 'ML-Project_FGIA-Model_2-Aircraft'
+model_name = 'ML-Project_FGIA-Model_2-Competition'
 
-batch_size = 6
-vis_num = batch_size  # The number of visualized images in tensorboard
+batch_size = 50
+vis_num = 0  # The number of visualized images in tensorboard
 eval_trainset = False  # Whether or not evaluate trainset
 save_interval = 1
 max_checkpoint_num = 200
-end_epoch = 5
+end_epoch = 200
 init_lr = 0.001
 lr_milestones = [60, 100]
 lr_decay_rate = 0.1
@@ -62,7 +62,7 @@ else:
     elif set == 'Aircraft':
         num_classes = 100
     elif set=='Competition':
-        num_classes = 20
+        num_classes = 100
 
 
 
