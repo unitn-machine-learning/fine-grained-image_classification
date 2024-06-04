@@ -10,9 +10,9 @@ set = 'Competition'  # Different dataset with different
 # set = 'Aircraft'  # Different dataset with different
 model_name = 'ML-Project_FGIA-Model_2-Competition'
 
-batch_size = 50
-vis_num = 0  # The number of visualized images in tensorboard
-eval_trainset = False  # Whether or not evaluate trainset
+batch_size = 6
+vis_num = batch_size  # The number of visualized images in tensorboard
+eval_trainset = True  # Whether or not evaluate trainset
 save_interval = 1
 max_checkpoint_num = 200
 end_epoch = 200

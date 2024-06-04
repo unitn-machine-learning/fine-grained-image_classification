@@ -18,7 +18,7 @@ def train(model,
           end_epoch,
           save_interval):
     # Initialize wandb
-    wandb.init(project='your_project_name')
+    wandb.init(project='model_2_competition_dataset')
     for epoch in range(start_epoch + 1, end_epoch + 1):
         model.train()
 
@@ -26,7 +26,7 @@ def train(model,
 
         lr = next(iter(optimizer.param_groups))['lr']
         
-        wandb.log({'learning_rate': lr}, step=epoch)
+        
         
         for i, data in enumerate(tqdm(trainloader)):
             if set == 'CUB':

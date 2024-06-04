@@ -1,3 +1,4 @@
+wandb
 model_2_refined
 model_1/wandb
 model_2/checkpoint/*

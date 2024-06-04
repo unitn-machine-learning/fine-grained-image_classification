@@ -11,6 +11,12 @@ class CompetitionDataset():
         self.input_size = input_size
         self.root = root
         self.is_train = is_train
+        label_txt_file = open(os.path.join(self.root, 'labels.txt'))
+        label_dict = {}
+        for line in label_txt_file:
+            label_dict[line.split(' ')[1][:-1]] = int(line.split(' ')[0])
+        
+        self.label_dict = label_dict
         
         if is_train:
             img_path = os.path.join(self.root, 'train')
@@ -48,18 +54,31 @@ class CompetitionDataset():
             img = np.stack([img] * 3, axis=-1)
         img = Image.fromarray(img, mode='RGB')
         
-        img = transforms.Resize((self.input_size, self.input_size), Image.BILINEAR)(img)
+        transform_train = transforms.Compose([
+            transforms.Resize((self.input_size, self.input_size), Image.BILINEAR),
+            transforms.RandomHorizontalFlip(),
+            transforms.ColorJitter(brightness=0.2, contrast=0.2),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                std=[0.229, 0.224, 0.225])
+        ])
+        transform_test =  transforms.Compose([
+            transforms.Resize((self.input_size, self.input_size), Image.BILINEAR),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                std=[0.229, 0.224, 0.225])
+        ])
         if self.is_train:
-            img = transforms.RandomHorizontalFlip()(img)
-            img = transforms.ColorJitter(brightness=0.2, contrast=0.2)(img)
-        img = transforms.ToTensor()(img)
-        img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
-        
+            img = transform_train(img)
+        else:
+            img = transform_test(img)    
+            
         if self.is_train:
             img_label = self.img_labels[index]
+            img_label = self.label_dict[str(img_label)]
             img_label = torch.tensor(img_label, dtype=torch.long)  # Convert label to tensor
             return img, img_label
-
+        
         return img
 
     def __len__(self):
@@ -262,4 +281,4 @@ class FGVC_aircraft():
 
 import os 
 
-os.listdirs()
+os.listdir()
