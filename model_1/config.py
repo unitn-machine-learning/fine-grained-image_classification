@@ -16,7 +16,7 @@ class_nums = {
     'car': 196,
     'air': 100,
     'dog': 120,
-    'competition':20
+    'competition':100
 }
 
 HyperParams = {

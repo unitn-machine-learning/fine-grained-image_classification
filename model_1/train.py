@@ -20,7 +20,7 @@ from config import class_nums, HyperParams, eval_test
 
 def train():
     # Initialize wandb
-    wandb.init(project="my_project", config=HyperParams)
+    wandb.init(project="model_1_competitiondata", config=HyperParams)
     config = wandb.config
 
     # Output dir

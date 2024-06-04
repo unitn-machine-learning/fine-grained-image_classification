@@ -30,6 +30,12 @@ class CompetitionDataset(Dataset):
         self.img_folder = os.path.join(root, 'train' if train else 'test')
         self.train = train
         self.root = root
+        label_txt_file = open(os.path.join(self.root, 'labels.txt'))
+        label_dict = {}
+        for line in label_txt_file:
+            label_dict[line.split(' ')[1][:-1]] = int(line.split(' ')[0])
+        
+        self.label_dict = label_dict
         
         self.img_paths = []
         self.img_labels = []
@@ -57,6 +63,8 @@ class CompetitionDataset(Dataset):
         if self.train:
             img = transform_train(img)
             img_label = self.img_labels[index]
+            img_label = self.label_dict[str(img_label)]
+            
             return img, img_label
         else:
             img = transform_test(img)
