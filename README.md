@@ -83,6 +83,11 @@ Make sure you have the following components installed on your local machine.
   
 Make sure the dataset is downloaded in the appropriate directory. And the config scripts are appropriately organized.
 
+Our Pre-trained Models and Challenge Dataset Can be Found here:
+* [Pre-trained models](https://drive.google.com/drive/folders/1wU-XDJRR4nTNU1fV-kUxkNU2BBTvfU8f)
+* [Challenge Dataset](https://drive.google.com/file/d/1uTFLGixs4IFPQW5W5-O6nBmtBfSwHEal)
+
+
 <!-- LICENSE -->
 ## License
 
