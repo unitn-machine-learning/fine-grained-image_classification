@@ -1,0 +1,4 @@
+cars_train/*
+cars_test/*
+stanford_cars.zip
+cars_annos.mat
