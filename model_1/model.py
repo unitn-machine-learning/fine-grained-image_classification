@@ -62,6 +62,9 @@ class FBSD(nn.Module):
     def __init__(self, class_num, arch='resnet50'):
         super(FBSD, self).__init__()
         feature_size = 512
+        self.dropout1 = nn.Dropout(p=0.2)  # Add dropout layer after conv_block1
+        self.dropout2 = nn.Dropout(p=0.2)  # Add dropout layer after conv_block2
+        self.dropout3 = nn.Dropout(p=0.2)  # Add dropout layer after conv_block3
         if arch == 'resnet50':
             self.features = ResNet(arch='resnet50')
             chans = [512, 1024, 2048]
@@ -126,10 +129,10 @@ class FBSD(nn.Module):
         ##### cross-level attention #############
         #########################################
 
-        att1 = self.conv_block1(fm1)
-        att2 = self.conv_block2(fm2)
-        att3 = self.conv_block3(fm3)
-
+        att1 = self.dropout1(self.conv_block1(fm1))
+        att2 = self.dropout2(self.conv_block2(fm2))
+        att3 = self.dropout3(self.conv_block3(fm3))
+        
         new_d1_from2, new_d2_from1 = self.inter(att1, att2)  # 1 2
         new_d1_from3, new_d3_from1 = self.inter(att1, att3)  # 1 3
         new_d2_from3, new_d3_from2 = self.inter(att2, att3)  # 2 3
