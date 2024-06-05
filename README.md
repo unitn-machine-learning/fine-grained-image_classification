@@ -51,11 +51,6 @@
     * [Model 1](#Model-1)
     * [Model 2](#Model-2)
     * [images](#images)
-    * [images](#images)
-    * [notebooks](#notebooks)
-    * [scripts](#scripts)
-    * [frontend](#frontend)
-    * [backend](#backend)
     * [root folder](#root-folder)
   - [Installation guide](#installation-guide)
   - [Getting Started](#getting-started)
@@ -68,32 +63,12 @@
 
 ### images:
 
-- `images/` the folder where all snapshot for the project are stored.
-
-### notebooks:
-
-- `notebooks/` the folder which contains code snippets for algorand sdk
-
-### scripts:
-
-- `.scripts/`: the folder where the python implementation can be found.
-
-### frontend:
-
-- `frontend/`: the folder where the frontend implementation of the application can be found.
-
-### backend:
-
-- `backend/`: the folder where the backend implementation of the application can be found.
-
-### .github:
-
-- `.github/`: the folder where github actions and CML workflow is integrated.
+- `images/` the folder where all snapshot for the training and testing logs are stored.
 
 
 ### root folder
 
-- `requirements.txt`: a text file lsiting the projet's dependancies.
+- `environment.yaml`: anaconda environment file, to load the environment.
 - `setup.py`: a configuration file for installing the scripts as a package.
 - `README.md`: Markdown text with a brief explanation of the project and the repository structure.
 
