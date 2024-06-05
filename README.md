@@ -93,22 +93,22 @@ Distributed under the MIT License. See `LICENSE` for more information.
 👤 **Alberto Gabriele Scuderi**
 
 * GitHub: [Alberto Gabriele Scuderi](https://github.com/)
-* Email: [Alberto Gabriele Scuderi](alberto.scuderi@studenti.unitn.it)
+* Email: [Alberto Gabriele Scuderi](mailto:alberto.scuderi@studenti.unitn.it)
 
 👤 **Hafiz Muhammad Ahmed**
 
 * GitHub: [Hafiz Muhammad Ahmed](https://github.com/)
-* Email: [Hafiz Muhammad Ahmed](hafizmuhammad.ahmed@studenti.unitn.it)
+* Email: [Hafiz Muhammad Ahmed](mailto:hafizmuhammad.ahmed@studenti.unitn.it)
 
 👤 **Julius Heiko Schmidt**
 
 * GitHub: [Julius Heiko Schmidt](https://github.com/)
-* Email: [Julius Heiko Schmidt](juliusheiko.schmidt@studenti.unitn.it)
+* Email: [Julius Heiko Schmidt](mailto:juliusheiko.schmidt@studenti.unitn.it)
 
 👤 **Yishak Tadele**
 
 * GitHub: [Yishak Tadele](https://github.com/isaaclucky)
-* Email: [Yishak Tadele](yishaktadele.nigatu@studenti.unitn.it)
+* Email: [Yishak Tadele](mailto:yishaktadele.nigatu@studenti.unitn.it)
 * LinkedIn: [Yishak Tadele](https://www.linkedin.com/in/yishak-tadele/)
 
 ## Show US your support
