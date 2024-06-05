@@ -18,7 +18,25 @@ from model import FBSD  # Ensure your model is imported correctly
 from datesets import get_trainAndtest
 from config import class_nums, HyperParams, eval_test
 
-def test():
+
+from http.client import responses
+import requests
+import json
+
+
+def submit(results, url="https://competition-production.up.railway.app/results/"):
+    res = json.dumps(results)
+    response = requests.post(url, res)
+    try:
+        result = json.loads(response.text)
+        print(f"accuracy is {result['accuracy']}")
+    except json.JSONDecodeError:
+        print(f"ERROR: {response.text}")
+        
+
+
+
+def test(current=False):
     
     # Output dir
     output_dir = HyperParams['kind'] + '_' + HyperParams['arch'] + '_output'
@@ -26,35 +44,20 @@ def test():
     
     # Data
     trainset, testset = get_trainAndtest()
-    testloader = DataLoader(testset, batch_size=HyperParams['bs'], shuffle=False, num_workers=8)
+    testloader = DataLoader(testset, shuffle=False, num_workers=8)
 
-    ####################################################
-    print("dataset: ", HyperParams['kind'])
-    print("backbone: ", HyperParams['arch'])
-    print("trainset: ", len(trainset))
-    print("testset: ", len(testset))
-    print("classnum: ", class_nums[HyperParams['kind']])
-    ####################################################
-
+    
     net = FBSD(class_num=class_nums[HyperParams['kind']], arch=HyperParams['arch'])
     net = net.cuda()
 
 
-
-
+    model_type = 'best_model'
+    if current:
+        model_type = 'current_model'
     # Load pretrained model if it exists
-    model_path = f'./{output_dir}/best_model.pth'
+    model_path = f'./{output_dir}/{model_type}.pth'
     if os.path.isfile(model_path):
         checkpoint = torch.load(model_path)
-
-        # checkpoint.pop('classifier_concat.4.weight', None)
-        # checkpoint.pop('classifier_concat.4.bias', None)
-        # checkpoint.pop('classifier1.4.weight', None)
-        # checkpoint.pop('classifier1.4.bias', None)
-        # checkpoint.pop('classifier2.4.weight', None)
-        # checkpoint.pop('classifier2.4.bias', None)
-        # checkpoint.pop('classifier3.4.weight', None)
-        # checkpoint.pop('classifier3.4.bias', None)
 
         # Load the pretrained weights into the model
         net.load_state_dict(checkpoint, strict=False)
@@ -77,7 +80,9 @@ def test():
     correct_com = 0
     total = 0
     predicted_results = []
-    for batch_idx, inputs in enumerate(testloader):
+    img_paths = []
+    for batch_idx, (inputs,img_path)  in enumerate(testloader):
+        img_paths.append(img_path)
         inputs = inputs.cuda()
         with torch.no_grad():
             output_1, output_2, output_3, output_concat = net(inputs)
@@ -86,7 +91,25 @@ def test():
         _, predicted_com = torch.max(outputs_com.data, 1)
         predicted_results.append(predicted_com.cpu().numpy())
 
-    return predicted_results 
+    
+    train_data = os.listdir('../model_2/datasets/CompetitionData/train')
+    train_data.sort()
 
-result = test()
-print(result)
+    class_dict = {}
+    i = 0
+    for item in train_data:
+        class_dict[str(i)] = item.split('_')[0]    
+        i+=1 
+    preds  = {}
+    for idx, result in enumerate(predicted_results):
+        preds[img_paths[idx][0].split('/')[-1]] = class_dict[str(result[0])]
+    
+    res = {
+    "images": preds,
+    "groupname": "checking"
+    }
+
+    submit(res)
+    
+    return predicted_results, img_paths
+

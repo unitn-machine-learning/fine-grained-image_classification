@@ -68,7 +68,7 @@ class CompetitionDataset(Dataset):
             return img, img_label
         else:
             img = transform_test(img)
-            return img
+            return  img, img_path
 
     def __len__(self):
         return len(self.img_paths)
