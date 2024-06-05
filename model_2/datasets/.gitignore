@@ -1,6 +1,4 @@
-# .gitignore to keep just .txt files
-# Filter everything...
-*
+
 
 # ... except the .gitignore...
 !.gitignore
