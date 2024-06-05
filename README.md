@@ -72,7 +72,7 @@ conda activate fine_grained_img_classification_env
 
 ## Report
 
-* 
+* Can be found in this root directory.
 
 ### Prerequisites
 
