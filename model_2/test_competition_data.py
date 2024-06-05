@@ -39,7 +39,8 @@ def create_testloader(data_dir, input_size, batch_size):
     return test_loader
 
 def test(root = './datasets/CompetitionData',labels_path='datasets/CompetitionData/labels.txt', pth_path = './models/competition.pth',num_classes = num_classes):
-    if test_competition:
+    if test_competition: # return if this is not required
+        print('set test_competition parameter in config if you want to test on competition data')
         return 
     label_txt_file = open(labels_path)
     class_dict = {}
