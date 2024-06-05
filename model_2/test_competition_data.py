@@ -58,7 +58,7 @@ def test(root = './datasets/CompetitionData',labels_path='datasets/CompetitionDa
         sys.exit('The pth doesn\'t exist.')
     
     print('Testing')
-    object_correct = 0
+    
     model.eval()
     preds = {}
     with torch.no_grad():
