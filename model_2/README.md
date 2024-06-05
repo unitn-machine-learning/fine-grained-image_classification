@@ -1,8 +1,8 @@
 # MMAL-Net
 
-This is a PyTorch implementation of the paper ["Multi-branch and Multi-scale Attention Learning for Fine-Grained Visual Categorization (MMAL-Net)"](https://arxiv.org/abs/2003.09150) (Fan Zhang, Meng Li, Guisheng Zhai, Yizhao Liu), and the paper has been accepted by the 27th International Conference on Multimedia Modeling (MMM2021). Welcome to discuss with us in issues!
+This is a continued work on "PyTorch implementation of the paper ["Multi-branch and Multi-scale Attention Learning for Fine-Grained Visual Categorization (MMAL-Net)"](https://arxiv.org/abs/2003.09150) (Fan Zhang, Meng Li, Guisheng Zhai, Yizhao Liu)", and the paper has been accepted by the 27th International Conference on Multimedia Modeling (MMM2021). Welcome to discuss with us in issues!
 
-![avatar](./network.png)
+
 
 ### Table of Contents
 - <a href='#requirements'>Requirements</a>
@@ -41,7 +41,7 @@ If you want to test the MMAL-Net, just run ``python test.py``. You need to speci
 We also provide the checkpoint model trained by ourselves, you can download if from [Google Drive](https://drive.google.com/open?id=13ANynWz7O3QK0RdL4KqASW8X_vMb6V4B) for **CUB-200-2011** or download from [here](https://drive.google.com/file/d/1-LD1Jz6Dh-P6Ibtl17scfrTFQTrW4Zy3/view?usp=sharing) for **FGVC-Aircraft**. If you test on our provided model, you will get 89.6% and 94.7% test accuracy, respectively.
 
 ## Reference
-If you are interested in our work and want to cite it, please acknowledge the following paper:
+If you are interested in this work and want to cite it, please acknowledge the following paper:
 
 ```
 @misc{zhang2020threebranch,

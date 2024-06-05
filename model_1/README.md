@@ -1,8 +1,7 @@
 #  Feature Boosting, Suppression, and Diversification for Fine-Grained Visual Classification
 
-PyTorch Code for [Feature Boosting, Suppression, and Diversification for Fine-Grained Visual Classification](https://arxiv.org/abs/2103.02782v1)
+This is a continuation work on "PyTorch Code for [Feature Boosting, Suppression, and Diversification for Fine-Grained Visual Classification](https://arxiv.org/abs/2103.02782v1)"
 
-![framework](fig/framework.png)
 
 # Requirement
 
@@ -19,7 +18,7 @@ change ``root_dir`` in the ``config.py`` and run ``python3 train.py``
 
 # Citation
 
-Please cite our paper if it is helpful for your research.
+This paper can be sited as:
 ```
 @misc{song2021feature,
       title={Feature Boosting, Suppression, and Diversification for Fine-Grained Visual Classification}, 
@@ -31,7 +30,3 @@ Please cite our paper if it is helpful for your research.
 }
 
 ```
-
-# Contact
-Thanks for your attention!
-If you have any suggestion or question, you can open an issue or contact songjianwei@smail.nju.edu.cn
