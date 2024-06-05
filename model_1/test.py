@@ -106,7 +106,7 @@ def test(current=False):
     
     res = {
     "images": preds,
-    "groupname": "checking"
+    "groupname": "duck_duck_goose"
     }
 
     submit(res)
