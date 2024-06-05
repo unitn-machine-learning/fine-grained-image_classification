@@ -81,6 +81,7 @@ Make sure you have the following components installed on your local machine.
 * Anaconda or Miniconda
 * Python == 3.7
   
+Make sure the dataset is downloaded in the appropriate directory. And the config scripts are appropriately organized.
 
 <!-- LICENSE -->
 ## License
