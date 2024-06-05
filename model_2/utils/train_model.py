@@ -6,6 +6,7 @@ from config import max_checkpoint_num, proposalN, eval_trainset, set, eval_tests
 from utils.eval_model import eval
 import wandb
 
+from test_competition_data import test
 
 def train(model,
           trainloader,
@@ -94,6 +95,9 @@ def train(model,
                 'Test/windowscls_loss_avg': windowscls_loss_avg,
                 'Test/total_loss_avg': total_loss_avg,
             }, step=epoch)
+        else:
+            preds = test()
+            
         
         
         # save checkpoint
