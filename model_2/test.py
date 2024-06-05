@@ -47,7 +47,7 @@ criterion = nn.CrossEntropyLoss()
 if os.path.exists(pth_path):
     epoch = auto_load_resume(model, pth_path, status='test')
 else:
-    sys.exit('There is not a pth exist.')
+    sys.exit('The pth doesn\'t exist.')
 
 print('Testing')
 raw_correct = 0

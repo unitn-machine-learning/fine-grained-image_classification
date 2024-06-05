@@ -11,6 +11,8 @@ import torch.optim as optim
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
 import wandb
+from test import test
+
 
 from torch.utils.data.dataloader import DataLoader
 import numpy as np
@@ -150,9 +152,7 @@ def train():
         
         if not eval_test:
             acc = train_acc
-        else:    
-            acc = test(net, testloader)
-            
+        a, b = test(current=True)
         # Evaluate
         torch.save(net.state_dict(), f'./{output_dir}/current_model.pth')
         if acc > best_val_acc:
@@ -166,23 +166,23 @@ def train():
         # Log validation accuracy to wandb
         wandb.log({"val_acc": acc, "best_val_acc": best_val_acc, "epoch": epoch})
 
-def test(net, testloader):
-    net.eval()
-    correct_com = 0
-    total = 0
+# def test(net, testloader):
+#     net.eval()
+#     correct_com = 0
+#     total = 0
 
-    for batch_idx, (inputs, targets) in enumerate(testloader):
-        inputs, targets = inputs.cuda(), targets.cuda()
-        with torch.no_grad():
-            output_1, output_2, output_3, output_concat = net(inputs)
-            outputs_com = output_1 + output_2 + output_3 + output_concat
+#     for batch_idx, (inputs, targets) in enumerate(testloader):
+#         inputs, targets = inputs.cuda(), targets.cuda()
+#         with torch.no_grad():
+#             output_1, output_2, output_3, output_concat = net(inputs)
+#             outputs_com = output_1 + output_2 + output_3 + output_concat
 
-        _, predicted_com = torch.max(outputs_com.data, 1)
-        total += targets.size(0)
-        correct_com += predicted_com.eq(targets.data).cpu().sum()
-    test_acc_com = 100. * float(correct_com) / total
+#         _, predicted_com = torch.max(outputs_com.data, 1)
+#         total += targets.size(0)
+#         correct_com += predicted_com.eq(targets.data).cpu().sum()
+#     test_acc_com = 100. * float(correct_com) / total
 
-    return test_acc_com 
+#     return test_acc_com 
 
 def set_seed(seed):
     torch.manual_seed(seed)

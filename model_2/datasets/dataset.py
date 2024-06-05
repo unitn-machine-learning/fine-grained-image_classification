@@ -79,7 +79,7 @@ class CompetitionDataset():
             img_label = torch.tensor(img_label, dtype=torch.long)  # Convert label to tensor
             return img, img_label
         
-        return img
+        return img, img_path
 
     def __len__(self):
         return len(self.img_paths)
