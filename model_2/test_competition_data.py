@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import sys
 from tqdm import tqdm
-from config import input_size, root, proposalN, channels, num_classes, set
+from config import input_size, root, proposalN, channels, num_classes, set, test_competition
 from utils.auto_laod_resume import auto_load_resume
 from networks.model import MainNet
 import warnings
@@ -39,7 +39,8 @@ def create_testloader(data_dir, input_size, batch_size):
     return test_loader
 
 def test(root = './datasets/CompetitionData',labels_path='datasets/CompetitionData/labels.txt', pth_path = './models/competition.pth',num_classes = num_classes):
-    
+    if test_competition:
+        return 
     label_txt_file = open(labels_path)
     class_dict = {}
     for line in label_txt_file:

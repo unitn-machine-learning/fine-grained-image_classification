@@ -24,6 +24,7 @@ stride = 32
 channels = 2048
 input_size = 448
 
+test_competition = False
 eval_testset = False
 
 # The pth path of pretrained model
